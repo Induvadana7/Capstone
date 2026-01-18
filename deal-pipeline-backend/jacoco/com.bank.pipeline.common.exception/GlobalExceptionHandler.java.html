@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GlobalExceptionHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">deal-pipeline-backend</a> &gt; <a href="index.source.html" class="el_package">com.bank.pipeline.common.exception</a> &gt; <span class="el_source">GlobalExceptionHandler.java</span></div><h1>GlobalExceptionHandler.java</h1><pre class="source lang-java linenums">package com.bank.pipeline.common.exception;
+
+import com.bank.pipeline.common.dto.ErrorResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.time.Instant;
+
+@RestControllerAdvice
+<span class="fc" id="L14">public class GlobalExceptionHandler {</span>
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleRuntime(RuntimeException ex,
+                                                       HttpServletRequest request) {
+
+<span class="nc" id="L20">        ErrorResponse err = new ErrorResponse(</span>
+<span class="nc" id="L21">                HttpStatus.BAD_REQUEST.value(),</span>
+<span class="nc" id="L22">                ex.getMessage(),</span>
+<span class="nc" id="L23">                request.getRequestURI(),</span>
+<span class="nc" id="L24">                Instant.now()</span>
+        );
+
+<span class="nc" id="L27">        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);</span>
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleValidation(MethodArgumentNotValidException ex,
+                                                          HttpServletRequest request) {
+
+<span class="nc" id="L34">        String msg = ex.getBindingResult()</span>
+<span class="nc" id="L35">                .getFieldErrors()</span>
+<span class="nc" id="L36">                .stream()</span>
+<span class="nc" id="L37">                .map(e -&gt; e.getField() + &quot;: &quot; + e.getDefaultMessage())</span>
+<span class="nc" id="L38">                .findFirst()</span>
+<span class="nc" id="L39">                .orElse(&quot;Validation error&quot;);</span>
+
+<span class="nc" id="L41">        ErrorResponse err = new ErrorResponse(</span>
+<span class="nc" id="L42">                HttpStatus.BAD_REQUEST.value(),</span>
+                msg,
+<span class="nc" id="L44">                request.getRequestURI(),</span>
+<span class="nc" id="L45">                Instant.now()</span>
+        );
+
+<span class="nc" id="L48">        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);</span>
+    }
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

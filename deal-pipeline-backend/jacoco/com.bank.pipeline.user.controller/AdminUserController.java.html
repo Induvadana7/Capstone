@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdminUserController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">deal-pipeline-backend</a> &gt; <a href="index.source.html" class="el_package">com.bank.pipeline.user.controller</a> &gt; <span class="el_source">AdminUserController.java</span></div><h1>AdminUserController.java</h1><pre class="source lang-java linenums">package com.bank.pipeline.user.controller;
+import com.bank.pipeline.user.model.User;
+import com.bank.pipeline.user.repository.UserRepository;
+import com.bank.pipeline.user.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.Instant;
+
+
+@RestController
+@RequestMapping(&quot;/api/admin/users&quot;)
+public class AdminUserController {
+
+
+    private final UserService userService;
+
+
+<span class="fc" id="L20">    public AdminUserController(UserService userService) {</span>
+<span class="fc" id="L21">        this.userService = userService;</span>
+<span class="fc" id="L22">    }</span>
+
+    @PreAuthorize(&quot;hasRole('ADMIN')&quot;)
+    @PostMapping
+    public User createUser(@RequestBody User user) {
+<span class="nc" id="L27">        return userService.createUser(user);</span>
+    }
+
+    @PreAuthorize(&quot;hasRole('ADMIN')&quot;)
+    @PutMapping(&quot;/{id}/status&quot;)
+    public User updateStatus(@PathVariable String id,
+                             @RequestParam boolean active) {
+<span class="nc" id="L34">        return userService.updateStatus(id, active);</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DealService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">deal-pipeline-backend</a> &gt; <a href="index.source.html" class="el_package">com.bank.pipeline.deal.service</a> &gt; <span class="el_source">DealService.java</span></div><h1>DealService.java</h1><pre class="source lang-java linenums">package com.bank.pipeline.deal.service;
+
+import com.bank.pipeline.deal.model.Deal;
+import com.bank.pipeline.deal.model.DealNote;
+import com.bank.pipeline.deal.model.DealStage;
+import com.bank.pipeline.deal.repository.DealRepository;
+import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+
+@Service
+public class DealService {
+
+    private final DealRepository dealRepository;
+
+<span class="fc" id="L16">    public DealService(DealRepository dealRepository) {</span>
+<span class="fc" id="L17">        this.dealRepository = dealRepository;</span>
+<span class="fc" id="L18">    }</span>
+
+    public Deal createDeal(Deal deal, String createdBy) {
+<span class="fc" id="L21">        deal.setCreatedBy(createdBy);</span>
+<span class="fc" id="L22">        deal.setCreatedAt(Instant.now());</span>
+<span class="fc" id="L23">        deal.setUpdatedAt(Instant.now());</span>
+<span class="fc" id="L24">        deal.setCurrentStage(DealStage.Prospect);</span>
+<span class="fc" id="L25">        return dealRepository.save(deal);</span>
+    }
+
+
+    public Deal getDealById(String id) {
+<span class="fc" id="L30">        return dealRepository.findById(id)</span>
+<span class="fc" id="L31">                .orElseThrow(() -&gt; new RuntimeException(&quot;Deal not found&quot;));</span>
+    }
+
+    public Deal updateStage(String id, DealStage stage) {
+<span class="fc" id="L35">        Deal deal = getDealById(id);</span>
+<span class="fc" id="L36">        deal.setCurrentStage(stage);</span>
+<span class="fc" id="L37">        deal.setUpdatedAt(Instant.now());</span>
+<span class="fc" id="L38">        return dealRepository.save(deal);</span>
+    }
+
+    public Deal addNote(String id, String username, String noteText) {
+<span class="fc" id="L42">        Deal deal = getDealById(id);</span>
+
+<span class="fc" id="L44">        DealNote note = new DealNote();</span>
+<span class="fc" id="L45">        note.setUser(username);</span>
+<span class="fc" id="L46">        note.setNote(noteText);</span>
+<span class="fc" id="L47">        note.setTimestamp(Instant.now());</span>
+
+<span class="fc" id="L49">        deal.getNotes().add(note);</span>
+<span class="fc" id="L50">        deal.setUpdatedAt(Instant.now());</span>
+<span class="fc" id="L51">        return dealRepository.save(deal);</span>
+    }
+
+    public Deal updateDealValue(String id, Double value) {
+<span class="fc" id="L55">        Deal deal = getDealById(id);</span>
+<span class="fc" id="L56">        deal.setDealValue(value);</span>
+<span class="fc" id="L57">        deal.setUpdatedAt(Instant.now());</span>
+<span class="fc" id="L58">        return dealRepository.save(deal);</span>
+    }
+
+    public void deleteDeal(String id) {
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (!dealRepository.existsById(id)) {</span>
+<span class="fc" id="L63">            throw new RuntimeException(&quot;Deal not found&quot;);</span>
+        }
+<span class="fc" id="L65">        dealRepository.deleteById(id);</span>
+<span class="fc" id="L66">    }</span>
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
