@@ -1,0 +1,12 @@
+<h3>Admin Actions</h3>
+
+<div style="display:flex; gap:10px; align-items:center;">
+  <label>Deal Value:</label>
+  <input type="number" [(ngModel)]="valueInput" />
+  <button (click)="saveValue()">Update Value</button>
+</div>
+
+<br />
+
+<button (click)="delete()">Delete Deal</button>
+

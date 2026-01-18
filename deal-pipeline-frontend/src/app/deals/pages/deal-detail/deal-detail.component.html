@@ -1,0 +1,142 @@
+<div class="detail-page" *ngIf="deal">
+
+  <!-- Header -->
+  <div class="detail-header">
+    <div>
+      <h1>Deal Details</h1>
+      <p class="sub">Edit deal basic details, update stage and manage notes</p>
+    </div>
+
+    <div class="header-actions">
+      <button mat-stroked-button (click)="router.navigate(['/deals'])">
+        ← Back to Deals
+      </button>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- Deal Info Card -->
+    <div class="card">
+      <div class="card-title">Deal Overview</div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="label">Client Name</div>
+          <div class="value">{{ deal.clientName }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="label">Current Stage</div>
+          <div>
+            <span class="stage-pill" [ngClass]="'stage-' + deal.currentStage">
+              {{ deal.currentStage }}
+            </span>
+          </div>
+        </div>
+
+        <div class="info-item full">
+          <div class="label">Summary</div>
+          <div class="value summary">{{ deal.summary }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ Edit Basic Fields -->
+    <div class="card">
+      <div class="card-title">Edit Deal</div>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Deal Type</mat-label>
+        <input matInput [(ngModel)]="editDealType" placeholder="Eg: M&A / IPO" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Sector</mat-label>
+        <input matInput [(ngModel)]="editSector" placeholder="Eg: Manufacturing / IT" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Summary</mat-label>
+        <textarea matInput rows="3" [(ngModel)]="editSummary"></textarea>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" (click)="onSaveBasicDetails()">
+        Save Changes
+      </button>
+    </div>
+
+    <!-- Stage Update -->
+    <div class="card">
+      <div class="card-title">Update Stage</div>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Stage</mat-label>
+        <mat-select
+          [value]="deal.currentStage"
+          (selectionChange)="onStageChange($any($event).value)"
+        >
+          <mat-option value="Prospect">Prospect</mat-option>
+          <mat-option value="UnderEvaluation">Under Evaluation</mat-option>
+          <mat-option value="TermSheetSubmitted">Term Sheet Submitted</mat-option>
+          <mat-option value="Closed">Closed</mat-option>
+          <mat-option value="Lost">Lost</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+
+    <!-- Notes Card -->
+    <div class="card full">
+      <div class="card-title">Notes</div>
+
+      <div class="notes" *ngIf="deal.notes?.length; else noNotes">
+        <div class="note" *ngFor="let n of deal.notes">
+          <div class="note-head">
+            <div class="who">{{ n.user }}</div>
+            <div class="time">{{ n.timestamp | date:'medium' }}</div>
+          </div>
+          <div class="note-text">{{ n.note }}</div>
+        </div>
+      </div>
+
+      <ng-template #noNotes>
+        <div class="empty">No notes added yet.</div>
+      </ng-template>
+
+      <div class="add-note">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Add Note</mat-label>
+          <textarea matInput rows="3" [(ngModel)]="noteInput"></textarea>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="onAddNote()">
+          Add Note
+        </button>
+      </div>
+    </div>
+
+    <!-- ADMIN Actions -->
+    <div class="card admin-card" *ngIf="isAdmin">
+      <div class="card-title">Admin Actions</div>
+
+    
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Update Deal Value</mat-label>
+        <input matInput type="number" [(ngModel)]="dealValueInput" />
+      </mat-form-field>
+
+      <div class="admin-actions">
+        <button mat-raised-button color="primary" (click)="onUpdateDealValue()">
+          Update Value
+        </button>
+
+        <button mat-raised-button color="warn" (click)="onDeleteDeal()">
+          Delete Deal
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

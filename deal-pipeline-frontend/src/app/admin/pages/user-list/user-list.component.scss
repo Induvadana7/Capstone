@@ -1,0 +1,71 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+}
+
+table {
+  width: 100%;
+  margin: 14px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+/* vertical lines */
+.mat-mdc-header-cell,
+.mat-mdc-cell {
+  border-right: 1px solid #e5e7eb;
+}
+
+/* remove last column right border */
+.mat-mdc-header-cell:last-child,
+.mat-mdc-cell:last-child {
+  border-right: none;
+}
+
+/* row horizontal line */
+.mat-mdc-row,
+.mat-mdc-header-row {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* hover */
+.mat-mdc-row:hover {
+  background: #eef6ff;
+}
+
+
+
+.role-chip{
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 12px;
+  background: #e5e7eb;
+}
+
+.role-chip.admin{
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.status{
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.status.active{
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status.inactive{
+  background: #fef3c7;
+  color: #92400e;
+}
+

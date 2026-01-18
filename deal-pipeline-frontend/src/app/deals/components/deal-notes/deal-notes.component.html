@@ -1,0 +1,22 @@
+<h2 style="margin-top:0;">Notes</h2>
+
+<div style="display:flex; gap:10px; align-items:center; margin-bottom:12px;">
+  <mat-form-field appearance="outline" style="flex:1;">
+    <mat-label>Add a note</mat-label>
+    <input matInput [(ngModel)]="noteText" />
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="submitNote()">
+    Add
+  </button>
+</div>
+
+<div *ngIf="notes.length === 0">No notes yet.</div>
+
+<ul *ngIf="notes.length > 0">
+  <li *ngFor="let n of notes" style="margin-bottom:8px;">
+    <b>{{ n.user || 'User' }}</b>: {{ n.note }}
+    <small *ngIf="n.timestamp">({{ n.timestamp | date:'short' }})</small>
+  </li>
+</ul>
+

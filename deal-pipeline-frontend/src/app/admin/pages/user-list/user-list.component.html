@@ -1,0 +1,83 @@
+<div class="page-container">
+
+  <!-- Header -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+    <h1 style="margin:0;">Users</h1>
+
+    <button mat-raised-button color="primary" routerLink="/admin/users/create">
+      + Create User
+    </button>
+  </div>
+
+  <!-- Search -->
+  <mat-form-field appearance="outline" style="width:320px; margin-bottom:16px;">
+    <mat-label>Search user</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="username/email/role" />
+  </mat-form-field>
+
+  <!-- Table Card -->
+  <mat-card class="mat-elevation-z2" style="padding:0; overflow:hidden;">
+
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <!-- Username -->
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Username</th>
+        <td mat-cell *matCellDef="let u"><b>{{ u.username }}</b></td>
+      </ng-container>
+
+      <!-- Email -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+        <td mat-cell *matCellDef="let u">{{ u.email }}</td>
+      </ng-container>
+
+      <!-- Role -->
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+        <td mat-cell *matCellDef="let u">
+  <span class="role-chip" [class.admin]="u.role === 'ADMIN'">
+    {{ u.role }}
+  </span>
+</td>
+
+      </ng-container>
+
+      <!-- Active -->
+      <ng-container matColumnDef="active">
+        <th mat-header-cell *matHeaderCellDef>Active</th>
+        <td mat-cell *matCellDef="let u">
+  <span class="status" [class.active]="u.active" [class.inactive]="!u.active">
+    {{ u.active ? 'Active' : 'Inactive' }}
+  </span>
+</td>
+
+      </ng-container>
+
+      <!-- Action -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <td mat-cell *matCellDef="let u">
+          <button
+            mat-raised-button
+            [color]="u.active ? 'warn' : 'primary'"
+            (click)="toggleStatus(u)"
+          >
+            {{ u.active ? 'Deactivate' : 'Activate' }}
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Rows -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <!-- Pagination -->
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+    </mat-paginator>
+
+  </mat-card>
+
+</div>

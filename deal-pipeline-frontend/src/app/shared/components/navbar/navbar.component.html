@@ -1,0 +1,29 @@
+<nav class="top-nav">
+  <div class="nav-left">
+    <div class="brand">Deal Pipeline Portal</div>
+
+    <!-- ✅ Hide Deals/Admin only on login page -->
+    <div class="nav-links" *ngIf="!hideMenu && authService.isLoggedIn()">
+      <a
+        routerLink="/deals"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Deals
+      </a>
+
+      <a
+        *ngIf="authService.isAdmin()"
+        routerLink="/admin/users"
+        routerLinkActive="active"
+      >
+        Admin
+      </a>
+    </div>
+  </div>
+
+  <!-- ✅ Logout should always show when logged in -->
+  <button class="logout-btn" *ngIf="authService.isLoggedIn()" (click)="logout()">
+    Logout
+  </button>
+</nav>

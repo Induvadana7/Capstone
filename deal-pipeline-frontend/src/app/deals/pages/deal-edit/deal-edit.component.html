@@ -1,0 +1,44 @@
+<div class="page-container">
+
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+    <h1 style="margin:0;">Edit Deal</h1>
+
+    <button mat-stroked-button color="primary" (click)="goBackToDetail()">
+      ← Back to Details
+    </button>
+  </div>
+
+  <mat-card class="mat-elevation-z2" style="padding:20px; max-width:700px;">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+
+      <mat-form-field appearance="outline" style="width:100%; margin-bottom:12px;">
+        <mat-label>Deal Type</mat-label>
+        <input matInput formControlName="dealType" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width:100%; margin-bottom:12px;">
+        <mat-label>Sector</mat-label>
+        <input matInput formControlName="sector" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width:100%; margin-bottom:12px;">
+        <mat-label>Summary</mat-label>
+        <textarea matInput rows="4" formControlName="summary"></textarea>
+      </mat-form-field>
+
+      <div style="display:flex; gap:12px; margin-top:10px;">
+        <button mat-raised-button color="primary" type="submit" [disabled]="loading || form.invalid">
+          {{ loading ? 'Saving...' : 'Save Changes' }}
+        </button>
+
+        <button mat-stroked-button type="button" (click)="goBackToDetail()">
+          Cancel
+        </button>
+      </div>
+
+    </form>
+  </mat-card>
+
+</div>
+
+
